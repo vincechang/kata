@@ -10,77 +10,45 @@
  * 2 characters ≤ length of order ≤ 8 characters
  */
 
-const order = readline();
-const side = readline();
-
-function getOppoSide(sideStr) {
-  const oppoSideOf = {
-    U: 'D',
-    D: 'U',
-    L: 'R',
-    R: 'L',
-  };
-  return oppoSideOf[sideStr];
-}
+const theOrder = readline().split('');
+const theSide = readline();
 
 /**
  * Same side: this side = 1
  * Opposite side: this side + opposide side
  * Flank side: this side * 2
  */
-function getLayersFromOndeSide(input, thisSideStr, thisSideCount, oppoSideCount) {
-  /**
-   * Why?
-  const samesideOrOppositeCount = input === sideStr ? 1 : thisSideCount + oppoSideCount;
-  const oppositeStr = getOppoSide(sideStr);
-  const result = input === oppositeStr ? samesideOrOppositeCount : thisSideCount * 2;
-  */
-  const oppositeStr = getOppoSide(thisSideStr);
-  let result;
-
-  switch (input) {
-    case thisSideStr:
-      result = 1;
-      break;
-    case oppositeStr:
-      result = thisSideCount + oppoSideCount;
-      break;
-    default:
-      result = thisSideCount * 2;
-      break;
-  }
-  return result;
-}
-
-function countfoldingPaper(orderStr, sideStr) {
-  const result = {
+function countfoldingPaper(order, side) {
+  const paper = {
     U: 1,
     D: 1,
     L: 1,
     R: 1,
   };
 
-  let U;
-  let D;
-  let L;
-  let R;
+  const map = {
+    U: ['U', 'D', 'L', 'R'],
+    D: ['D', 'U', 'L', 'R'],
+    L: ['L', 'R', 'U', 'D'],
+    R: ['R', 'L', 'U', 'D'],
+  };
 
-  for (let i = 0; i < orderStr.length; i += 1) {
-    [U, D, L, R] = [result.U, result.D, result.L, result.R];
+  let a;
+  let b;
+  let c;
+  let d;
 
-    // count U
-    result.U = getLayersFromOndeSide(orderStr[i], 'U', U, D);
+  let s;
 
-    // count D
-    result.D = getLayersFromOndeSide(orderStr[i], 'D', D, U);
-
-    // count L
-    result.L = getLayersFromOndeSide(orderStr[i], 'L', L, R);
-
-    // count R
-    result.R = getLayersFromOndeSide(orderStr[i], 'R', R, L);
+  for (let i = 0; i < order.length; i += 1) {
+    s = order[i];
+    [a, b, c, d] = map[s];
+    paper[b] += paper[a];
+    paper[a] = 1;
+    paper[c] += paper[c];
+    paper[d] += paper[d];
   }
-  return result[sideStr];
+  return paper[side];
 }
 
-console.log(countfoldingPaper(order, side));
+print(countfoldingPaper(theOrder, theSide));
