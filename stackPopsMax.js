@@ -1,14 +1,16 @@
 function Stack() {
   this.a = [];
 
-  this.getMax = () => {
-    const length = this.a.length;
-    return length === 0 ? null : this.a[length - 1].m;
-  };
-
   this.push = (v) => {
-    const nowMax = this.getMax();
-    const nextMax = nowMax === null || v > nowMax ? v : nowMax;
+    const length = this.a.length;
+    let nowMax;
+    let nextMax;
+    if (!length) {
+      nextMax = v;
+    } else {
+      nowMax = this.a[length - 1].m;
+      nextMax = v > nowMax ? v : nowMax;
+    }
     console.log(`v:${v}, nowMax:${nowMax}, nextMax:${nextMax}`);
     this.a.push({
       v,
