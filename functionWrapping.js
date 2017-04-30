@@ -1,9 +1,9 @@
 function wrap(object, method, wrapper) {
   const fn = object[method];
 
-  const objectMethod = function objectMethod() {
-    const what = [fn.bind(this)].concat(
-      Array.prototype.slice.call(arguments));
+  const objectMethod = function objectMethod(...args) {
+    console.log(Array.isArray(args));
+    const what = [fn.bind(this)].concat(args);
     console.log(`What is ${what}`);
     return wrapper.apply(this, what);
   };
